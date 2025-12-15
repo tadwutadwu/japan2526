@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025/2026 福冈·嬉野·豪斯登堡 跨年终极行程</title>
+    <style>
+        :root {
+            --primary: #FF5A5F;
+            --secondary: #00A699;
+            --link-blue: #4285F4;
+            --bg: #F7F7F7;
+            --card-bg: #FFFFFF;
+            --text: #484848;
+            --subtext: #767676;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding-bottom: 80px;
+            line-height: 1.5;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #FF5A5F, #FF8E92);
+            color: white;
+            padding: 20px 20px 10px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+        h1 { margin: 0; font-size: 1.2rem; font-weight: 700; }
+        .countdown { font-size: 0.8rem; margin-top: 5px; opacity: 0.95; font-weight: 500;}
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            overflow-x: auto;
+            background: white;
+            padding: 10px 5px;
+            margin-top: -10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            scrollbar-width: none;
+            z-index: 100;
+            position: relative;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            border: none;
+            background: #f0f0f0;
+            padding: 8px 14px;
+            margin: 0 5px;
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+            white-space: nowrap;
+            border-radius: 16px;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .tab-btn.active {
+            background-color: var(--text);
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Container */
+        .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+        .day-section { display: none; animation: fadeIn 0.3s ease; }
+        .day-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Timeline Items */
+        .timeline-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            border-left: 5px solid #ddd;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .timeline-item.booked { border-left-color: var(--secondary); }
+        .timeline-item.warning { border-left-color: var(--primary); }
+        .timeline-item.transit { border-left-color: var(--link-blue); }
+
+        .time-badge {
+            background: #eee; padding: 2px 6px; border-radius: 4px;
+            font-size: 0.75rem; font-weight: bold; color: #333;
+        }
+        .item-title {
+            font-size: 1.05rem; font-weight: bold; margin: 6px 0;
+            display: flex; justify-content: space-between; align-items: flex-start;
+        }
+        .status-badge {
+            font-size: 0.65rem; padding: 2px 5px; border-radius: 4px;
+            text-transform: uppercase; margin-left: 5px; white-space: nowrap;
+            display: inline-block; vertical-align: middle;
+        }
+        .status-ok { background: #e6fffa; color: #00796b; border: 1px solid #b2dfdb; }
+        .status-alert { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+
+        .details { font-size: 0.9rem; color: #555; line-height: 1.5; }
+        .highlight { color: var(--primary); font-weight: bold; }
+        
+        /* Checkbox */
+        .check-wrapper { position: absolute; top: 15px; right: 15px; }
+        .custom-checkbox { width: 22px; height: 22px; accent-color: var(--secondary); cursor: pointer;}
+
+        /* Driver Card */
+        .driver-card {
+            margin-top: 12px;
+            background: #fdfdfd;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .driver-header {
+            font-size: 0.7rem; color: #999; text-transform: uppercase; letter-spacing: 1px;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .jp-address {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #222;
+            line-height: 1.3;
+        }
+        .map-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--link-blue);
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .map-btn:hover { background-color: #3367d6; }
+
+        /* Footer */
+        footer { text-align: center; font-size: 0.8rem; color: var(--subtext); margin-top: 30px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>2025/26 跨年终极行程 🇯🇵</h1>
+    <div class="countdown" id="countdown">计算中...</div>
+</header>
+
+<div class="tabs">
+    <button class="tab-btn active" onclick="showDay('day1')">Day 1 (12/30)</button>
+    <button class="tab-btn" onclick="showDay('day2')">Day 2 (12/31)</button>
+    <button class="tab-btn" onclick="showDay('day3')">Day 3 (1/1)</button>
+    <button class="tab-btn" onclick="showDay('day4')">Day 4 (1/2)</button>
+    <button class="tab-btn" onclick="showDay('day5')">Day 5 (1/3)</button>
+    <button class="tab-btn" onclick="showDay('day6')">Day 6 (1/4)</button>
+</div>
+
+<div class="container">
+
+    <div id="day1" class="day-section active">
+        <div class="timeline-item transit">
+            <div class="check-wrapper"><input type="checkbox" class="custom-checkbox"></div>
+            <span class="time-badge">15:30</span>
+            <div class="item-title">🛬 抵达福冈机场</div>
+            <div class="details">
+                前往国际线航站楼 1F 巴士站。<br>
+                <div class="driver-card">
+                    <div class="driver-header">📍 目的地 (给司机看)</div>
+                    <div class="jp-address">福岡空港 国際線ターミナル</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Fukuoka+Airport+International+Terminal" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item booked">
+            <div class="check-wrapper"><input type="checkbox" class="custom-checkbox"></div>
+            <span class="time-badge">17:10</span> <span class="status-badge status-ok">✅ 已预订</span>
+            <div class="item-title">🚌 九州号 -> 嬉野</div>
+            <div class="details">
+                <span class="highlight">⚡ 上车后致电嬉野馆接驳</span><br>
+                <div class="driver-card">
+                    <div class="driver-header">📍 下车地点</div>
+                    <div class="jp-address">嬉野バスセンター<br><span style="font-size:0.8rem;color:#666">(Ureshino Bus Center)</span></div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Ureshino+Bus+Center" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <span class="time-badge">19:15</span>
+            <div class="item-title">🏨 入住：嬉野馆</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">🚕 请带我去酒店</div>
+                    <div class="jp-address">湯快リゾート 嬉野温泉 嬉野館</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Yukai+Resort+Ureshino+Onsen+Ureshinokan" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day2" class="day-section">
+        <div class="timeline-item">
+            <span class="time-badge">10:00</span>
+            <div class="item-title">☀️ 早午餐：宗庵 横长</div>
+            <div class="details">
+                特色：温泉汤豆腐。<br>
+                <div class="driver-card">
+                    <div class="driver-header">📍 餐厅地址</div>
+                    <div class="jp-address">宗庵 よこ長 (Yokocho)</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Soan+Yokocho+Ureshino" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item booked">
+            <span class="time-badge">12:00</span> <span class="status-badge status-ok">✅ 包车</span>
+            <div class="item-title">🚗 前往豪斯登堡</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">📍 目的地</div>
+                    <div class="jp-address">ハウステンボス (Huis Ten Bosch)</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Huis+Ten+Bosch" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <span class="time-badge">13:30</span>
+            <div class="item-title">🥩 午餐：Road Leeuw</div>
+            <div class="details">
+                佐世保柠檬牛排。<br>
+                <a href="https://www.google.com/maps/search/?api=1&query=Road+Leeuw+Huis+Ten+Bosch" target="_blank" style="display:inline-block;margin-top:5px;color:var(--link-blue)">🗺️ 园区内位置查看</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="day3" class="day-section">
+        <div class="timeline-item booked">
+            <div class="check-wrapper"><input type="checkbox" class="custom-checkbox"></div>
+            <span class="time-badge">13:07</span> <span class="status-badge status-ok">✅ 出票</span>
+            <div class="item-title">🚄 嬉野温泉站 -> 武雄 -> 博多</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">📍 车站</div>
+                    <div class="jp-address">嬉野温泉駅 (Ureshino Onsen Sta.)</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Ureshino+Onsen+Station" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <span class="time-badge">15:00</span>
+            <div class="item-title">🏨 福冈海鹰希尔顿</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">🚕 请带我去酒店</div>
+                    <div class="jp-address">ヒルトン福岡シーホーク<br>(Hilton Fukuoka Sea Hawk)</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Hilton+Fukuoka+Sea+Hawk" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item booked">
+            <span class="time-badge">19:00</span>
+            <div class="item-title">🍲 晚餐：摩次锅 Ooyama</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">📍 餐厅 (都酒店2F)</div>
+                    <div class="jp-address">博多もつ鍋 おおやま 都ホテル博多店</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Hakata+Motsunabe+Ooyama+Miyako+Hotel" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day4" class="day-section">
+        <div class="timeline-item warning">
+            <div class="check-wrapper"><input type="checkbox" class="custom-checkbox"></div>
+            <span class="time-badge">10:45</span> <span class="status-badge status-alert">必争</span>
+            <div class="item-title">🍚 午餐：Yamaya 天神店</div>
+            <div class="details">
+                务必 11:00 前到达排队。<br>
+                <div class="driver-card">
+                    <div class="driver-header">📍 餐厅</div>
+                    <div class="jp-address">博多もつ鍋 やまや 天神店</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Hakata+Motsunabe+Yamaya+Tenjin" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <span class="time-badge">14:00</span>
+            <div class="item-title">✨ TeamLab Forest</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">📍 目的地 (希尔顿隔壁)</div>
+                    <div class="jp-address">BOSS E・ZO FUKUOKA</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=BOSS+E+ZO+FUKUOKA" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item booked">
+            <span class="time-badge">19:00</span>
+            <div class="item-title">🐔 晚餐：博多水炊 Yamato</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">📍 餐厅 (Gate's 7F)</div>
+                    <div class="jp-address">博多水炊き 大和 中洲店<br><span style="font-size:0.8rem">Gate'sビル 7F</span></div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Hakata+Mizutaki+Yamato+Nakasu" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day5" class="day-section">
+        <div class="timeline-item">
+            <span class="time-badge">08:00</span>
+            <div class="item-title">🌋 一日游集合点</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">📍 集合点 (博多站筑紫口)</div>
+                    <div class="jp-address">ローソン オリエンタルホテル福岡店<br><span style="font-size:0.8rem">Lawson Oriental Hotel Fukuoka</span></div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Lawson+Oriental+Hotel+Fukuoka" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item warning">
+            <span class="time-badge">19:00</span>
+            <div class="item-title">🥩 晚餐：烧肉 Bakuro</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">📍 餐厅</div>
+                    <div class="jp-address">焼肉のバ黒 (Bakuro) 博多店</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Yakiniku+no+Bakuro+Hakata" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="day6" class="day-section">
+        <div class="timeline-item">
+            <span class="time-badge">10:00</span>
+            <div class="item-title">🚕 前往机场</div>
+            <div class="details">
+                <div class="driver-card">
+                    <div class="driver-header">📍 目的地</div>
+                    <div class="jp-address">福岡空港 国際線ターミナル</div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Fukuoka+Airport+International+Terminal" target="_blank" class="map-btn">🗺️ 谷歌地图导航</a>
+                </div>
+            </div>
+        </div>
+        <div class="timeline-item transit">
+            <span class="time-badge">12:55</span>
+            <div class="item-title">✈️ 起飞回家</div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>2025/2026 Trip • Made by Gemini</p>
+</footer>
+
+<script>
+    function showDay(dayId) {
+        document.querySelectorAll('.day-section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(dayId).classList.add('active');
+        event.currentTarget.classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    const targetDate = new Date("2025-12-30T15:30:00").getTime();
+    setInterval(function() {
+        const now = new Date().getTime();
+        const distance = targetDate - now;
+        if (distance < 0) {
+            document.getElementById("countdown").innerHTML = "Enjoy your trip! ✈️";
+            return;
+        }
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        document.getElementById("countdown").innerHTML = `距离出发：${days}天 ${hours}小时`;
+    }, 1000);
+</script>
+
+</body>
+</html>
