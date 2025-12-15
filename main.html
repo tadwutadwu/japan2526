@@ -7,7 +7,7 @@
     <style>
         :root {
             --primary: #FF5A5F;
-            --secondary: #00A699;
+            --secondary: #00A699; /* 预订绿 */
             --link-blue: #4285F4;
             --bg: #F7F7F7;
             --card-bg: #FFFFFF;
@@ -95,18 +95,23 @@
             background: #eee; padding: 2px 6px; border-radius: 4px;
             font-size: 0.75rem; font-weight: bold; color: #333;
         }
+        
+        /* 状态标签样式 */
+        .status-badge {
+            font-size: 0.65rem; padding: 2px 6px; border-radius: 4px;
+            text-transform: uppercase; margin-left: 6px; white-space: nowrap;
+            display: inline-block; vertical-align: middle;
+            font-weight: bold;
+        }
+        .status-ok { background: #e6fffa; color: #00796b; border: 1px solid #b2dfdb; } /* 已预订颜色 */
+        .status-alert { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
+
         .item-title {
             font-size: 1.05rem; font-weight: bold; margin: 6px 0;
             display: flex; justify-content: space-between; align-items: flex-start;
+            flex-wrap: wrap;
         }
-        .status-badge {
-            font-size: 0.65rem; padding: 2px 5px; border-radius: 4px;
-            text-transform: uppercase; margin-left: 5px; white-space: nowrap;
-            display: inline-block; vertical-align: middle;
-        }
-        .status-ok { background: #e6fffa; color: #00796b; border: 1px solid #b2dfdb; }
-        .status-alert { background: #fff5f5; color: #c53030; border: 1px solid #feb2b2; }
-
+        
         .details { font-size: 0.9rem; color: #555; line-height: 1.5; }
         .highlight { color: var(--primary); font-weight: bold; }
         
@@ -229,8 +234,9 @@
         </div>
 
         <div class="timeline-item booked">
-            <span class="time-badge">12:00</span> <span class="status-badge status-ok">✅ 包车</span>
-            <div class="item-title">🚗 前往豪斯登堡</div>
+            <div class="check-wrapper"><input type="checkbox" class="custom-checkbox"></div>
+            <span class="time-badge">12:00</span> <span class="status-badge status-ok">✅ 已预订</span>
+            <div class="item-title">🚗 包车前往豪斯登堡</div>
             <div class="details">
                 <div class="driver-card">
                     <div class="driver-header">📍 目的地</div>
@@ -253,7 +259,7 @@
     <div id="day3" class="day-section">
         <div class="timeline-item booked">
             <div class="check-wrapper"><input type="checkbox" class="custom-checkbox"></div>
-            <span class="time-badge">13:07</span> <span class="status-badge status-ok">✅ 出票</span>
+            <span class="time-badge">13:07</span> <span class="status-badge status-ok">✅ 已预订</span>
             <div class="item-title">🚄 嬉野温泉站 -> 武雄 -> 博多</div>
             <div class="details">
                 <div class="driver-card">
@@ -277,7 +283,8 @@
         </div>
 
         <div class="timeline-item booked">
-            <span class="time-badge">19:00</span>
+            <div class="check-wrapper"><input type="checkbox" class="custom-checkbox"></div>
+            <span class="time-badge">19:00</span> <span class="status-badge status-ok">✅ 已预订</span>
             <div class="item-title">🍲 晚餐：摩次锅 Ooyama</div>
             <div class="details">
                 <div class="driver-card">
@@ -317,7 +324,8 @@
         </div>
 
         <div class="timeline-item booked">
-            <span class="time-badge">19:00</span>
+            <div class="check-wrapper"><input type="checkbox" class="custom-checkbox"></div>
+            <span class="time-badge">19:00</span> <span class="status-badge status-ok">✅ 已预订</span>
             <div class="item-title">🐔 晚餐：博多水炊 Yamato</div>
             <div class="details">
                 <div class="driver-card">
@@ -343,6 +351,7 @@
         </div>
 
         <div class="timeline-item warning">
+            <div class="check-wrapper"><input type="checkbox" class="custom-checkbox"></div>
             <span class="time-badge">19:00</span>
             <div class="item-title">🥩 晚餐：烧肉 Bakuro</div>
             <div class="details">
